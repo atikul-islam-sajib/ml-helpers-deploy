@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>ML-Helpers</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Home";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> ML-Helpers
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href=".">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#key-enhancements">Key Enhancements</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#weighted-predictions-based-on-out-of-bag-oob-loss">Weighted Predictions Based on Out-of-Bag (OOB) Loss</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#access-to-in-bag-and-out-of-bag-data">Access to In-Bag and Out-of-Bag Data</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#enhanced-tree-visualization">Enhanced Tree Visualization</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#classification-with-customrandomforestclassifier">Classification with CustomRandomForestClassifier</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#regression-with-customrandomforestregressor">Regression with CustomRandomForestRegressor</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#benchmark-evaluation">Benchmark Evaluation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#enhanced-tree-visualization_1">Enhanced Tree Visualization</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#classification-visualization-with-customrandomforestclassifier">Classification Visualization with CustomRandomForestClassifier</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#regression-visualization-with-customrandomforestregressor">Regression Visualization with CustomRandomForestRegressor</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#regression-visualization-with-scikit-learns-decision-tree-dt">Regression Visualization with Scikit-learn's Decision Tree (DT)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classifier-visualization-with-scikit-learns-decision-tree-dt">Classifier Visualization with Scikit-learn's Decision Tree (DT)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#compatibility-note">Compatibility Note</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#license">License</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#acknowledgments">Acknowledgments</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="benchmark_evalaute/">Benchmark Evaluate</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="charts/">Charts</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="classifier/">Custom RF Classifier</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="regressor/">Custom RF Regressor</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="utils/">Utils</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">ML-Helpers</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ml-helpers-enhanced-randomforest-with-custom-features">ML Helpers: Enhanced RandomForest with Custom Features</h1>
+<p>ML Helpers offers advanced versions of the RandomForestClassifier and RandomForestRegressor from scikit-learn, incorporating significant enhancements for improved performance and insights. These custom implementations provide a more flexible and insightful approach to RandomForest modeling.</p>
+<h2 id="key-enhancements">Key Enhancements</h2>
+<h3 id="weighted-predictions-based-on-out-of-bag-oob-loss">Weighted Predictions Based on Out-of-Bag (OOB) Loss</h3>
+<p>Our CustomRandomForest models introduce weighted predictions, leveraging OOB loss to enhance prediction accuracy:</p>
+<ul>
+<li><strong>OOB Loss Calculation:</strong> For each tree, the OOB loss is calculated as the mean squared error between actual and predicted OOB samples.</li>
+<li><strong>Weight Assignment:</strong> This OOB loss is then transformed into a weight for each tree using an exponential function: <code>exp(-OOB_loss)</code>. Higher weights are assigned to trees with lower OOB loss, indicating better performance.</li>
+<li><strong>Weighted Predictions:</strong> During prediction, these weights are used to aggregate outputs from all trees, giving more influence to better-performing trees.</li>
+</ul>
+<h3 id="access-to-in-bag-and-out-of-bag-data">Access to In-Bag and Out-of-Bag Data</h3>
+<ul>
+<li><strong>Data Tracking:</strong> The algorithm tracks which samples are used for training each tree (in-bag) and which are left out (OOB), offering detailed insights into the model's training process.</li>
+<li><strong>Analysis and Insights:</strong> Post-training, access to in-bag and OOB samples for each tree is available, facilitating custom analyses and deeper understanding of each tree's interaction with the data.</li>
+</ul>
+<p>These features make our CustomRandomForestClassifier and CustomRandomForestRegressor uniquely capable of providing weighted predictions based on tree performance and offering valuable insights into the training data used for each tree.</p>
+<h2 id="enhanced-tree-visualization">Enhanced Tree Visualization</h2>
+<p>The <code>plot_tree</code> functionality has been enhanced to include new features that allow for a more detailed and informative visualization of decision trees within the RandomForest models. This enhancement aids in the interpretability and analysis of the models, providing users with a deeper understanding of how decisions are made within the forest.</p>
+<h2 id="installation">Installation</h2>
+<p>Clone the repository and install the required dependencies:</p>
+<pre><code class="language-bash">git clone https://github.com/atikul-islam-sajib/ml_helpers.git
+cd ml_helpers
+pip install -r requirements.txt
+</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="classification-with-customrandomforestclassifier">Classification with CustomRandomForestClassifier</h3>
+<pre><code class="language-python">from src.classifier import CustomRandomForestClassifier
+from sklearn.datasets import make_classification
+
+X, y = make_classification(n_samples=1000, n_features=4, n_informative=2, random_state=42)
+
+clf = CustomRandomForestClassifier(n_estimators=10)
+clf.fit(X, y)
+# Example of using weighted predictions
+print(clf.predict(X[:5], weights=&quot;expOOB&quot;))
+</code></pre>
+<h3 id="regression-with-customrandomforestregressor">Regression with CustomRandomForestRegressor</h3>
+<pre><code class="language-python">from src.regressor import CustomRandomForestRegressor
+from sklearn.datasets import make_regression
+
+X, y = make_regression(n_samples=1000, n_features=4, n_informative=2, random_state=42)
+
+reg = CustomRandomForestRegressor(n_estimators=100)
+reg.fit(X, y)
+# Example of using weighted predictions
+print(reg.predict(X[:5], weights=&quot;expOOB&quot;))
+</code></pre>
+<h3 id="benchmark-evaluation">Benchmark Evaluation</h3>
+<p>Evaluate the models on benchmark datasets:</p>
+<pre><code class="language-python">from src.benchmark_evaluate import evaluate_datasets
+
+classification_scores = evaluate_datasets([&quot;diabetes&quot;, &quot;breast_cancer&quot;, &quot;heart&quot;, &quot;haberman&quot;], task_type=&quot;classification&quot;)
+regression_scores = evaluate_datasets([&quot;fico&quot;, &quot;enhancer&quot;, &quot;credit_g&quot;, &quot;juvenile_clean&quot;], task_type=&quot;regression&quot;)
+
+print(&quot;Classification Scores:&quot;, classification_scores)
+print(&quot;Regression Scores:&quot;, regression_scores)
+</code></pre>
+<h3 id="enhanced-tree-visualization_1">Enhanced Tree Visualization</h3>
+<p>Our <code>plot_tree</code> method has been enhanced to support a broader range of models. For example, CustomRandomForestClassifier, CustomRandomForestRegressor, scikit-learn's Decision Tree (DT), and scikit-learn's RandomForest (RF). This ensures broad applicability for model analysis and interpretation, facilitating a deeper understanding of model behavior across various tree-based modeling approaches.</p>
+<h4 id="classification-visualization-with-customrandomforestclassifier">Classification Visualization with CustomRandomForestClassifier</h4>
+<pre><code class="language-python">from src.chart import Charts
+from imodels.util.data_util import get_clean_dataset
+
+X, y, feature_names = get_clean_dataset('heart')
+model = CustomRandomForestClassifier(n_estimators=3, max_depth=3)
+model.fit(X, y)  # Ensure the model is fitted
+charts = Charts()
+graph = charts.plot_tree(model, feature_names, class_names=y.astype(str))
+graph
+</code></pre>
+<h4 id="regression-visualization-with-customrandomforestregressor">Regression Visualization with CustomRandomForestRegressor</h4>
+<pre><code class="language-python"># Ensure you import necessary modules and define `charts`
+X, y, feature_names = get_clean_dataset('credit_g')
+model = CustomRandomForestRegressor(n_estimators=3, max_depth=3)
+model.fit(X, y)  # Ensure the model is fitted
+graph = charts.plot_tree(model, feature_names,
+
+ class_names=y.astype(str))
+graph
+</code></pre>
+<h4 id="regression-visualization-with-scikit-learns-decision-tree-dt">Regression Visualization with Scikit-learn's Decision Tree (DT)</h4>
+<pre><code class="language-python"># Ensure you import necessary modules and define `charts`
+X, y, feature_names = get_clean_dataset('credit_g')
+model = DecisionTreeRegressor(n_estimators=3, max_depth=3)
+model.fit(X, y)  # Ensure the model is fitted
+graph = charts.plot_tree(model, feature_names,
+
+ class_names=y.astype(str))
+graph
+</code></pre>
+<h4 id="classifier-visualization-with-scikit-learns-decision-tree-dt">Classifier Visualization with Scikit-learn's Decision Tree (DT)</h4>
+<pre><code class="language-python"># Ensure you import necessary modules and define `charts`
+X, y, feature_names = get_clean_dataset('credit_g')
+model = DecisionTreeClassifier(n_estimators=3, max_depth=3)
+model.fit(X, y)  # Ensure the model is fitted
+graph = charts.plot_tree(model, feature_names,
+
+ class_names=y.astype(str))
+graph
+</code></pre>
+<h4 id="compatibility-note">Compatibility Note</h4>
+<p>The <code>plot_tree</code> visualization method is compatible with:</p>
+<ul>
+<li>CustomRandomForestClassifier</li>
+<li>CustomRandomForestRegressor</li>
+<li>scikit-learn's Decision Tree (DT)</li>
+<li>scikit-learn's RandomForest (RF)</li>
+</ul>
+<p>This ensures broad applicability for model analysis and interpretation, facilitating a deeper understanding of model behavior across various tree-based modeling approaches.</p>
+<h2 id="license">License</h2>
+<p>This project is licensed under the MIT License - see the LICENSE file for details.</p>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>We extend our gratitude to the scikit-learn contributors for their foundational work, upon which our custom implementations and enhancements are built.</p>
+<p>Courtesy: Atikul Islam Sajib.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="benchmark_evalaute/" class="btn btn-neutral float-right" title="Benchmark Evaluate">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="benchmark_evalaute/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.5.3
+Build Date UTC : 2024-02-10 00:02:01.752013+00:00
+-->

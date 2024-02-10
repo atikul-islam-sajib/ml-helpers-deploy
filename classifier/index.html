@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Custom RF Classifier - ML-Helpers</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Custom RF Classifier";
+        var mkdocs_page_input_path = "classifier.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ML-Helpers
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../benchmark_evalaute/">Benchmark Evaluate</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../charts/">Charts</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Custom RF Classifier</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../regressor/">Custom RF Regressor</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../utils/">Utils</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ML-Helpers</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Custom RF Classifier</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="classifier"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="classifier.CustomRandomForestClassifier" class="doc doc-heading">
+          <code>CustomRandomForestClassifier</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="sklearn.ensemble.RandomForestClassifier">RandomForestClassifier</span></code></p>
+
+  
+      <p>A custom implementation of RandomForestClassifier that supports weighting trees based on their
+out-of-bag (OOB) error.</p>
+<p>This class extends sklearn's RandomForestClassifier, adding functionality to compute and use
+weights for each tree in the ensemble. Weights are derived from the exponential of the negative
+OOB error, enabling more influential contributions from better-performing trees when making predictions.</p>
+<h4 id="classifier.CustomRandomForestClassifier--attributes">Attributes:</h4>
+<ul>
+<li><code>in_bag_indices_</code>: list of arrays
+    Indices of samples drawn for training each tree.</li>
+<li><code>oob_indices_</code>: list of arrays
+    Out-of-bag sample indices for each tree.</li>
+<li><code>tree_weights_</code>: list of floats
+    Weights for each tree, computed based on their OOB error.</li>
+</ul>
+<h4 id="classifier.CustomRandomForestClassifier--methods">Methods:</h4>
+<ul>
+<li><code>fit(X, y)</code>: Fits the random forest model on the input data <code>X</code> and target <code>y</code>.</li>
+<li><code>predict(X, weights=None)</code>: Predicts class labels for samples in <code>X</code>.</li>
+<li><code>predict_proba(X, weights=None)</code>: Predicts class probabilities for samples in <code>X</code>.
+    The <code>weights</code> parameter can be either 'uniform' or 'expOOB' to influence prediction.</li>
+</ul>
+<h4 id="classifier.CustomRandomForestClassifier--examples">Examples:</h4>
+<p>Uniform weights example:</p>
+<pre><code class="language-python">from sklearn.datasets import make_classification
+
+X, y = make_classification(n_samples=1000, n_features=4,
+                        n_informative=2, n_redundant=0,
+                        random_state=42)
+
+clf = CustomRandomForestClassifier(n_estimators=10)
+clf.fit(X, y)
+print(clf.predict(X[:5], weights=&quot;uniform&quot;))
+# or
+print(clf.predict_proba(X[:5], weights=&quot;uniform&quot;))
+</code></pre>
+<p>Exponential OOB weights example:</p>
+<pre><code class="language-python">from sklearn.datasets import make_classification
+
+X, y = make_classification(n_samples=1000, n_features=4,
+                        n_informative=2, n_redundant=0,
+                        random_state=42)
+
+clf = CustomRandomForestClassifier(n_estimators=10)
+clf.fit(X, y)
+print(clf.predict(X[:5], weights=&quot;expOOB&quot;))
+# or
+print(clf.predict_proba(X[:5], weights=&quot;expOOB&quot;))
+</code></pre>
+
+            <details class="quote">
+              <summary>Source code in <code>classifier.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CustomRandomForestClassifier</span><span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A custom implementation of RandomForestClassifier that supports weighting trees based on their</span>
+<span class="sd">    out-of-bag (OOB) error.</span>
+
+<span class="sd">    This class extends sklearn&#39;s RandomForestClassifier, adding functionality to compute and use</span>
+<span class="sd">    weights for each tree in the ensemble. Weights are derived from the exponential of the negative</span>
+<span class="sd">    OOB error, enabling more influential contributions from better-performing trees when making predictions.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - `in_bag_indices_`: list of arrays</span>
+<span class="sd">        Indices of samples drawn for training each tree.</span>
+<span class="sd">    - `oob_indices_`: list of arrays</span>
+<span class="sd">        Out-of-bag sample indices for each tree.</span>
+<span class="sd">    - `tree_weights_`: list of floats</span>
+<span class="sd">        Weights for each tree, computed based on their OOB error.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">    --------</span>
+<span class="sd">    - `fit(X, y)`: Fits the random forest model on the input data `X` and target `y`.</span>
+<span class="sd">    - `predict(X, weights=None)`: Predicts class labels for samples in `X`.</span>
+<span class="sd">    - `predict_proba(X, weights=None)`: Predicts class probabilities for samples in `X`.</span>
+<span class="sd">        The `weights` parameter can be either &#39;uniform&#39; or &#39;expOOB&#39; to influence prediction.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    Uniform weights example:</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    from sklearn.datasets import make_classification</span>
+
+<span class="sd">    X, y = make_classification(n_samples=1000, n_features=4,</span>
+<span class="sd">                            n_informative=2, n_redundant=0,</span>
+<span class="sd">                            random_state=42)</span>
+
+<span class="sd">    clf = CustomRandomForestClassifier(n_estimators=10)</span>
+<span class="sd">    clf.fit(X, y)</span>
+<span class="sd">    print(clf.predict(X[:5], weights=&quot;uniform&quot;))</span>
+<span class="sd">    # or</span>
+<span class="sd">    print(clf.predict_proba(X[:5], weights=&quot;uniform&quot;))</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    Exponential OOB weights example:</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    from sklearn.datasets import make_classification</span>
+
+<span class="sd">    X, y = make_classification(n_samples=1000, n_features=4,</span>
+<span class="sd">                            n_informative=2, n_redundant=0,</span>
+<span class="sd">                            random_state=42)</span>
+
+<span class="sd">    clf = CustomRandomForestClassifier(n_estimators=10)</span>
+<span class="sd">    clf.fit(X, y)</span>
+<span class="sd">    print(clf.predict(X[:5], weights=&quot;expOOB&quot;))</span>
+<span class="sd">    # or</span>
+<span class="sd">    print(clf.predict_proba(X[:5], weights=&quot;expOOB&quot;))</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_bag_indices_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oob_indices_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">estimator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">:</span>
+            <span class="n">random_state</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">random_state</span>
+            <span class="n">in_bag_indices</span> <span class="o">=</span> <span class="n">generate_sample_indices</span><span class="p">(</span><span class="n">random_state</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+            <span class="n">oob_indices</span> <span class="o">=</span> <span class="n">generate_unsampled_indices</span><span class="p">(</span><span class="n">random_state</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">in_bag_indices_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">in_bag_indices</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oob_indices_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oob_indices</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">oob_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">oob_predictions</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">oob_indices</span><span class="p">])</span>
+                <span class="n">oob_loss</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">oob_indices</span><span class="p">],</span> <span class="n">oob_predictions</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">oob_loss</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Normalize tree weights</span>
+        <span class="n">total_weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_weight</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">weight</span> <span class="o">/</span> <span class="n">total_weight</span> <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span>
+            <span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make predictions for the input samples using the custom random forest model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The input samples.</span>
+<span class="sd">        weights : str, optional (default=None)</span>
+<span class="sd">            The weighting scheme to use for aggregating tree predictions. Options are:</span>
+<span class="sd">            - &#39;expOOB&#39;: Use exponential of the negative out-of-bag error as weights.</span>
+<span class="sd">            - &#39;uniform&#39;: Use uniform weights for all trees.</span>
+<span class="sd">            If None or an unrecognized string is provided, &#39;uniform&#39; weighting is used.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        predictions : array of shape (n_samples,)</span>
+<span class="sd">            The predicted classes.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The &#39;expOOB&#39; weighting scheme emphasizes trees with lower OOB errors by assigning them</span>
+<span class="sd">        higher weights, potentially improving prediction accuracy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;estimators_&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The forest is not fitted yet!&quot;</span><span class="p">)</span>
+
+        <span class="n">weighted_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">weights</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;expOOB&quot;</span><span class="p">,</span> <span class="s2">&quot;uniform&quot;</span><span class="p">]:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="s2">&quot;uniform&quot;</span>
+
+        <span class="k">if</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;expOOB&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">tree</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span><span class="p">):</span>
+                <span class="n">preds</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+                <span class="n">weighted_preds</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">preds</span>
+        <span class="k">elif</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;uniform&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">:</span>
+                <span class="n">preds</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+                <span class="n">weighted_preds</span> <span class="o">+=</span> <span class="n">preds</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">)</span>
+
+        <span class="n">final_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">weighted_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">final_preds</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict class probabilities for the input samples using the custom random forest model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The input samples.</span>
+<span class="sd">        weights : str, optional (default=None)</span>
+<span class="sd">            The weighting scheme to use for aggregating tree predictions. Options are:</span>
+<span class="sd">            - &#39;expOOB&#39;: Use exponential of the negative out-of-bag error as weights.</span>
+<span class="sd">            - &#39;uniform&#39;: Use uniform weights for all trees.</span>
+<span class="sd">            If None or an unrecognized string is provided, &#39;uniform&#39; weighting is used.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        proba : array of shape (n_samples, n_classes)</span>
+<span class="sd">            The class probabilities of the input samples.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Similar to `predict`, but returns probabilities of each class instead of predicting the class label.</span>
+<span class="sd">        The &#39;expOOB&#39; weighting can help in achieving more nuanced probability estimates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;estimators_&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The forest is not fitted yet!&quot;</span><span class="p">)</span>
+
+        <span class="n">weighted_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">weights</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;expOOB&quot;</span><span class="p">,</span> <span class="s2">&quot;uniform&quot;</span><span class="p">]:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="s2">&quot;uniform&quot;</span>
+
+        <span class="k">if</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;expOOB&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">tree</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span><span class="p">):</span>
+                <span class="n">preds</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+                <span class="n">weighted_preds</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">preds</span>
+        <span class="k">elif</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;uniform&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">:</span>
+                <span class="n">preds</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+                <span class="n">weighted_preds</span> <span class="o">+=</span> <span class="n">preds</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">weighted_preds</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="classifier.CustomRandomForestClassifier.predict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Make predictions for the input samples using the custom random forest model.</p>
+<h5 id="classifier.CustomRandomForestClassifier.predict--parameters">Parameters</h5>
+<p>X : {array-like, sparse matrix} of shape (n_samples, n_features)
+    The input samples.
+weights : str, optional (default=None)
+    The weighting scheme to use for aggregating tree predictions. Options are:
+    - 'expOOB': Use exponential of the negative out-of-bag error as weights.
+    - 'uniform': Use uniform weights for all trees.
+    If None or an unrecognized string is provided, 'uniform' weighting is used.</p>
+<h5 id="classifier.CustomRandomForestClassifier.predict--returns">Returns</h5>
+<p>predictions : array of shape (n_samples,)
+    The predicted classes.</p>
+<h5 id="classifier.CustomRandomForestClassifier.predict--notes">Notes</h5>
+<p>The 'expOOB' weighting scheme emphasizes trees with lower OOB errors by assigning them
+higher weights, potentially improving prediction accuracy.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>classifier.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make predictions for the input samples using the custom random forest model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">        The input samples.</span>
+<span class="sd">    weights : str, optional (default=None)</span>
+<span class="sd">        The weighting scheme to use for aggregating tree predictions. Options are:</span>
+<span class="sd">        - &#39;expOOB&#39;: Use exponential of the negative out-of-bag error as weights.</span>
+<span class="sd">        - &#39;uniform&#39;: Use uniform weights for all trees.</span>
+<span class="sd">        If None or an unrecognized string is provided, &#39;uniform&#39; weighting is used.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    predictions : array of shape (n_samples,)</span>
+<span class="sd">        The predicted classes.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The &#39;expOOB&#39; weighting scheme emphasizes trees with lower OOB errors by assigning them</span>
+<span class="sd">    higher weights, potentially improving prediction accuracy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;estimators_&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The forest is not fitted yet!&quot;</span><span class="p">)</span>
+
+    <span class="n">weighted_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">weights</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;expOOB&quot;</span><span class="p">,</span> <span class="s2">&quot;uniform&quot;</span><span class="p">]:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="s2">&quot;uniform&quot;</span>
+
+    <span class="k">if</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;expOOB&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tree</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span><span class="p">):</span>
+            <span class="n">preds</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">weighted_preds</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">preds</span>
+    <span class="k">elif</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;uniform&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">:</span>
+            <span class="n">preds</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">weighted_preds</span> <span class="o">+=</span> <span class="n">preds</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">)</span>
+
+    <span class="n">final_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">weighted_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">final_preds</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="classifier.CustomRandomForestClassifier.predict_proba" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Predict class probabilities for the input samples using the custom random forest model.</p>
+<h5 id="classifier.CustomRandomForestClassifier.predict_proba--parameters">Parameters</h5>
+<p>X : {array-like, sparse matrix} of shape (n_samples, n_features)
+    The input samples.
+weights : str, optional (default=None)
+    The weighting scheme to use for aggregating tree predictions. Options are:
+    - 'expOOB': Use exponential of the negative out-of-bag error as weights.
+    - 'uniform': Use uniform weights for all trees.
+    If None or an unrecognized string is provided, 'uniform' weighting is used.</p>
+<h5 id="classifier.CustomRandomForestClassifier.predict_proba--returns">Returns</h5>
+<p>proba : array of shape (n_samples, n_classes)
+    The class probabilities of the input samples.</p>
+<h5 id="classifier.CustomRandomForestClassifier.predict_proba--notes">Notes</h5>
+<p>Similar to <code>predict</code>, but returns probabilities of each class instead of predicting the class label.
+The 'expOOB' weighting can help in achieving more nuanced probability estimates.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>classifier.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Predict class probabilities for the input samples using the custom random forest model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">        The input samples.</span>
+<span class="sd">    weights : str, optional (default=None)</span>
+<span class="sd">        The weighting scheme to use for aggregating tree predictions. Options are:</span>
+<span class="sd">        - &#39;expOOB&#39;: Use exponential of the negative out-of-bag error as weights.</span>
+<span class="sd">        - &#39;uniform&#39;: Use uniform weights for all trees.</span>
+<span class="sd">        If None or an unrecognized string is provided, &#39;uniform&#39; weighting is used.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    proba : array of shape (n_samples, n_classes)</span>
+<span class="sd">        The class probabilities of the input samples.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Similar to `predict`, but returns probabilities of each class instead of predicting the class label.</span>
+<span class="sd">    The &#39;expOOB&#39; weighting can help in achieving more nuanced probability estimates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;estimators_&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The forest is not fitted yet!&quot;</span><span class="p">)</span>
+
+    <span class="n">weighted_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">weights</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;expOOB&quot;</span><span class="p">,</span> <span class="s2">&quot;uniform&quot;</span><span class="p">]:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="s2">&quot;uniform&quot;</span>
+
+    <span class="k">if</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;expOOB&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tree</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_weights_</span><span class="p">):</span>
+            <span class="n">preds</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">weighted_preds</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">preds</span>
+    <span class="k">elif</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;uniform&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">:</span>
+            <span class="n">preds</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">weighted_preds</span> <span class="o">+=</span> <span class="n">preds</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">weighted_preds</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../charts/" class="btn btn-neutral float-left" title="Charts"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../regressor/" class="btn btn-neutral float-right" title="Custom RF Regressor">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../charts/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../regressor/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Charts - ML-Helpers</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Charts";
+        var mkdocs_page_input_path = "charts.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ML-Helpers
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../benchmark_evalaute/">Benchmark Evaluate</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Charts</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../classifier/">Custom RF Classifier</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../regressor/">Custom RF Regressor</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../utils/">Utils</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ML-Helpers</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Charts</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="chart"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="chart.Charts" class="doc doc-heading">
+          <code>Charts</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Provides visualization functionalities for decision trees and random forests using graphviz and matplotlib.</p>
+<h4 id="chart.Charts--features">Features</h4>
+<ul>
+<li>Calculate impurity reduction for each node in a decision tree.</li>
+<li>Retrieve Out-Of-Bag (OOB) error from fitted RandomForest models.</li>
+<li>Generate DOT source for tree visualizations with node coloring based on impurity.</li>
+<li>Automatically generate DOT source for visualization of model's first tree or a single decision tree.</li>
+<li>Plot decision trees or the first tree of a random forest using graphviz.</li>
+<li>Visualize the first few trees in a RandomForest model.</li>
+</ul>
+<h4 id="chart.Charts--methods">Methods</h4>
+<h5 id="chart.Charts--calculate_impurity_reductiontree"><code>calculate_impurity_reduction(tree)</code></h5>
+<p>Calculates the decrease in impurity for each node of a decision tree, indicating each split's contribution.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>tree</code> (DecisionTreeClassifier.tree_): The tree object from a fitted DecisionTreeClassifier or RandomForestClassifier.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>numpy.ndarray</code>: An array of impurity reduction values for each node.</li>
+</ul>
+<h5 id="chart.Charts--get_oob_errormodel"><code>get_oob_error(model)</code></h5>
+<p>Retrieves the OOB error from a fitted RandomForestClassifier.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>model</code> (RandomForestClassifier): The fitted model.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>float</code> or <code>None</code>: The OOB error if available, otherwise <code>None</code>.</li>
+</ul>
+<h5 id="chart.Charts--get_dot_sourcetree-feature_names-class_names-impurity_reduction-custom_metric-oob_errornone"><code>get_dot_source(tree, feature_names, class_names, impurity_reduction, custom_metric, oob_error=None)</code></h5>
+<p>Generates DOT source for tree visualization with node coloring based on impurity.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>tree</code> (DecisionTreeClassifier.tree_): The tree object from a fitted model.</li>
+<li><code>feature_names</code> (list): List of feature names.</li>
+<li><code>class_names</code> (list): List of class names for the target variable.</li>
+<li><code>impurity_reduction</code> (numpy.ndarray): Impurity reduction values for each node.</li>
+<li><code>custom_metric</code> (numpy.ndarray): Custom metric values for each node.</li>
+<li><code>oob_error</code> (float, optional): OOB error of the model, if applicable.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>str</code>: A string representation of the DOT source for the tree visualization.</li>
+</ul>
+<h5 id="chart.Charts--auto_generate_dot_sourcemodel-feature_names-class_names"><code>auto_generate_dot_source(model, feature_names, class_names)</code></h5>
+<p>Automatically generates DOT source for a model's first tree or a single decision tree.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>model</code>: The fitted model (supports various tree-based models).</li>
+<li><code>feature_names</code> (list): List of feature names.</li>
+<li><code>class_names</code> (list): List of class names for the target variable.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>str</code>: The DOT source for visualizing the model's first tree.</li>
+</ul>
+<h5 id="chart.Charts--plot_treemodel-feature_names-class_names"><code>plot_tree(model, feature_names, class_names)</code></h5>
+<p>Plots a decision tree or the first tree of a random forest using graphviz.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>model</code>: The fitted model (DecisionTreeClassifier or RandomForestClassifier).</li>
+<li><code>feature_names</code> (list): List of feature names.</li>
+<li><code>class_names</code> (list): List of class names for the target variable.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>graphviz.Source</code>: The graphviz object for the tree visualization.</li>
+</ul>
+<h5 id="chart.Charts--plot_forest_treesforest_model-feature_names-class_names-max_trees5"><code>plot_forest_trees(forest_model, feature_names, class_names, max_trees=5)</code></h5>
+<p>Visualizes the first few trees in a RandomForest model.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>forest_model</code> (RandomForestClassifier): The fitted RandomForestClassifier model.</li>
+<li><code>feature_names</code> (list): Names of the features.</li>
+<li><code>class_names</code> (list): Names of the target classes.</li>
+<li><code>max_trees</code> (int): Maximum number of trees to plot. Defaults to 5.</li>
+</ul>
+<p><strong>Note:</strong></p>
+<p>This method prints the visualization of each tree one by one.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>chart.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Charts</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides visualization functionalities for decision trees and random forests using graphviz and matplotlib.</span>
+
+<span class="sd">    ## Features</span>
+
+<span class="sd">    - Calculate impurity reduction for each node in a decision tree.</span>
+<span class="sd">    - Retrieve Out-Of-Bag (OOB) error from fitted RandomForest models.</span>
+<span class="sd">    - Generate DOT source for tree visualizations with node coloring based on impurity.</span>
+<span class="sd">    - Automatically generate DOT source for visualization of model&#39;s first tree or a single decision tree.</span>
+<span class="sd">    - Plot decision trees or the first tree of a random forest using graphviz.</span>
+<span class="sd">    - Visualize the first few trees in a RandomForest model.</span>
+
+<span class="sd">    ## Methods</span>
+
+<span class="sd">    ### `calculate_impurity_reduction(tree)`</span>
+<span class="sd">    Calculates the decrease in impurity for each node of a decision tree, indicating each split&#39;s contribution.</span>
+
+<span class="sd">    **Parameters:**</span>
+
+<span class="sd">    - `tree` (DecisionTreeClassifier.tree_): The tree object from a fitted DecisionTreeClassifier or RandomForestClassifier.</span>
+
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    - `numpy.ndarray`: An array of impurity reduction values for each node.</span>
+
+<span class="sd">    ### `get_oob_error(model)`</span>
+<span class="sd">    Retrieves the OOB error from a fitted RandomForestClassifier.</span>
+
+<span class="sd">    **Parameters:**</span>
+
+<span class="sd">    - `model` (RandomForestClassifier): The fitted model.</span>
+
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    - `float` or `None`: The OOB error if available, otherwise `None`.</span>
+
+<span class="sd">    ### `get_dot_source(tree, feature_names, class_names, impurity_reduction, custom_metric, oob_error=None)`</span>
+<span class="sd">    Generates DOT source for tree visualization with node coloring based on impurity.</span>
+
+<span class="sd">    **Parameters:**</span>
+
+<span class="sd">    - `tree` (DecisionTreeClassifier.tree_): The tree object from a fitted model.</span>
+<span class="sd">    - `feature_names` (list): List of feature names.</span>
+<span class="sd">    - `class_names` (list): List of class names for the target variable.</span>
+<span class="sd">    - `impurity_reduction` (numpy.ndarray): Impurity reduction values for each node.</span>
+<span class="sd">    - `custom_metric` (numpy.ndarray): Custom metric values for each node.</span>
+<span class="sd">    - `oob_error` (float, optional): OOB error of the model, if applicable.</span>
+
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    - `str`: A string representation of the DOT source for the tree visualization.</span>
+
+<span class="sd">    ### `auto_generate_dot_source(model, feature_names, class_names)`</span>
+<span class="sd">    Automatically generates DOT source for a model&#39;s first tree or a single decision tree.</span>
+
+<span class="sd">    **Parameters:**</span>
+
+<span class="sd">    - `model`: The fitted model (supports various tree-based models).</span>
+<span class="sd">    - `feature_names` (list): List of feature names.</span>
+<span class="sd">    - `class_names` (list): List of class names for the target variable.</span>
+
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    - `str`: The DOT source for visualizing the model&#39;s first tree.</span>
+
+<span class="sd">    ### `plot_tree(model, feature_names, class_names)`</span>
+<span class="sd">    Plots a decision tree or the first tree of a random forest using graphviz.</span>
+
+<span class="sd">    **Parameters:**</span>
+
+<span class="sd">    - `model`: The fitted model (DecisionTreeClassifier or RandomForestClassifier).</span>
+<span class="sd">    - `feature_names` (list): List of feature names.</span>
+<span class="sd">    - `class_names` (list): List of class names for the target variable.</span>
+
+<span class="sd">    **Returns:**</span>
+
+<span class="sd">    - `graphviz.Source`: The graphviz object for the tree visualization.</span>
+
+<span class="sd">    ### `plot_forest_trees(forest_model, feature_names, class_names, max_trees=5)`</span>
+<span class="sd">    Visualizes the first few trees in a RandomForest model.</span>
+
+<span class="sd">    **Parameters:**</span>
+
+<span class="sd">    - `forest_model` (RandomForestClassifier): The fitted RandomForestClassifier model.</span>
+<span class="sd">    - `feature_names` (list): Names of the features.</span>
+<span class="sd">    - `class_names` (list): Names of the target classes.</span>
+<span class="sd">    - `max_trees` (int): Maximum number of trees to plot. Defaults to 5.</span>
+
+<span class="sd">    **Note:**</span>
+
+<span class="sd">    This method prints the visualization of each tree one by one.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">calculate_impurity_reduction</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate impurity reduction for each node in the decision tree.</span>
+
+<span class="sd">        This method computes the decrease in impurity for each node of the tree as a measure of how much each split contributes to organizing the data into homogenous groups.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - tree (DecisionTreeClassifier.tree_): The tree object from a fitted DecisionTreeClassifier or a tree from a RandomForestClassifier.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - numpy.ndarray: An array of impurity reduction values for each node in the tree.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">node_count</span>
+        <span class="n">children_left</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">children_left</span>
+        <span class="n">children_right</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">children_right</span>
+        <span class="n">impurity</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">impurity</span>
+        <span class="n">weighted_n_node_samples</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">weighted_n_node_samples</span>
+
+        <span class="n">impurity_reduction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">children_left</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">!=</span> <span class="n">children_right</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>  <span class="c1"># if not a leaf node</span>
+                <span class="n">left_weight</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">weighted_n_node_samples</span><span class="p">[</span><span class="n">children_left</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+                    <span class="o">/</span> <span class="n">weighted_n_node_samples</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">right_weight</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">weighted_n_node_samples</span><span class="p">[</span><span class="n">children_right</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+                    <span class="o">/</span> <span class="n">weighted_n_node_samples</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">impurity_reduction</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">impurity</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span>
+                    <span class="n">left_weight</span> <span class="o">*</span> <span class="n">impurity</span><span class="p">[</span><span class="n">children_left</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+                    <span class="o">+</span> <span class="n">right_weight</span> <span class="o">*</span> <span class="n">impurity</span><span class="p">[</span><span class="n">children_right</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">impurity_reduction</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_oob_error</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Out-Of-Bag (OOB) error for Random Forest models.</span>
+
+<span class="sd">        This method retrieves the OOB error from a fitted RandomForestClassifier, which is a measure of prediction error for the training data.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - model (RandomForestClassifier): The fitted RandomForestClassifier model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - float or None: The OOB error if available, otherwise None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;oob_score_&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">oob_score_</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_dot_source</span><span class="p">(</span>
+        <span class="n">tree</span><span class="p">,</span>
+        <span class="n">feature_names</span><span class="p">,</span>
+        <span class="n">class_names</span><span class="p">,</span>
+        <span class="n">impurity_reduction</span><span class="p">,</span>
+        <span class="n">custom_metric</span><span class="p">,</span>
+        <span class="n">oob_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate DOT source for tree visualization with node coloring based on impurity.</span>
+
+<span class="sd">        This method creates a DOT graph description for visualizing the structure of a decision tree, including details about nodes, their splits, and coloring based on impurity levels.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - tree (DecisionTreeClassifier.tree_): The tree object from a fitted model.</span>
+<span class="sd">        - feature_names (list): List of feature names.</span>
+<span class="sd">        - class_names (list): List of class names for the target variable.</span>
+<span class="sd">        - impurity_reduction (numpy.ndarray): Impurity reduction values for each node.</span>
+<span class="sd">        - custom_metric (numpy.ndarray): An array of custom metric values for each node.</span>
+<span class="sd">        - oob_error (float, optional): Out-Of-Bag error of the model, if applicable.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - str: A string representation of the DOT source for the tree visualization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">node_count</span>
+        <span class="n">children_left</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">children_left</span>
+        <span class="n">children_right</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">children_right</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">feature</span>
+        <span class="n">threshold</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">threshold</span>
+        <span class="n">impurity</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">impurity</span>
+        <span class="n">n_node_samples</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">n_node_samples</span>
+        <span class="n">weighted_n_node_samples</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">weighted_n_node_samples</span>
+
+        <span class="c1"># Adjust color settings to match scikit-learn style</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span>  <span class="c1"># Use Blues color map for impurity-based coloring</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">(</span>
+            <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">impurity</span><span class="p">)</span> <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">impurity</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="p">)</span>  <span class="c1"># Normalize impurity values</span>
+        <span class="n">scalar_mapping</span> <span class="o">=</span> <span class="n">ScalarMappable</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+
+        <span class="n">dot_source</span> <span class="o">=</span> <span class="s2">&quot;digraph Tree {</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">dot_source</span> <span class="o">+=</span> <span class="s1">&#39;node [shape=box, style=&quot;filled&quot;, fontname=&quot;helvetica&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">dot_source</span> <span class="o">+=</span> <span class="s1">&#39;edge [fontname=&quot;helvetica&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">if</span> <span class="n">oob_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;label=&quot;OOB Error: </span><span class="si">{</span><span class="n">oob_error</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="se">\\</span><span class="s1">n&quot;;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">dot_source</span> <span class="o">+=</span> <span class="s1">&#39;labelloc=&quot;t&quot;;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">):</span>
+            <span class="n">fillcolor</span> <span class="o">=</span> <span class="n">scalar_mapping</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">impurity</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">bytes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">hexcolor</span> <span class="o">=</span> <span class="n">to_hex</span><span class="p">(</span><span class="n">fillcolor</span><span class="p">)</span>
+
+            <span class="n">node_info</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+            <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Samples: </span><span class="si">{</span><span class="n">n_node_samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+            <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Value: </span><span class="si">{</span><span class="n">tree</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+            <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Impurity: </span><span class="si">{</span><span class="n">impurity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+            <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Impurity Reduction: </span><span class="si">{</span><span class="n">impurity_reduction</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+            <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Custom Metric: </span><span class="si">{</span><span class="n">custom_metric</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="k">if</span> <span class="n">children_left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">children_right</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> [label=&quot;</span><span class="si">{</span><span class="n">node_info</span><span class="si">}</span><span class="s1">&quot;, fillcolor=&quot;</span><span class="si">{</span><span class="n">hexcolor</span><span class="si">}</span><span class="s1">&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">feature_name</span> <span class="o">=</span> <span class="n">feature_names</span><span class="p">[</span><span class="n">feature</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">nFeature: </span><span class="si">{</span><span class="n">feature_name</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+                <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Threshold: </span><span class="si">{</span><span class="n">threshold</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> [label=&quot;</span><span class="si">{</span><span class="n">node_info</span><span class="si">}</span><span class="s1">&quot;, fillcolor=&quot;</span><span class="si">{</span><span class="n">hexcolor</span><span class="si">}</span><span class="s1">&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+            <span class="k">if</span> <span class="n">children_left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> -&gt; </span><span class="si">{</span><span class="n">children_left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> [label=&quot;yes&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">if</span> <span class="n">children_right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> -&gt; </span><span class="si">{</span><span class="n">children_right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> [label=&quot;no&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="n">dot_source</span> <span class="o">+=</span> <span class="s2">&quot;}&quot;</span>
+        <span class="k">return</span> <span class="n">dot_source</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">auto_generate_dot_source</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Automatically generate DOT source for a given tree-based model.</span>
+
+<span class="sd">        This method selects the first tree from a RandomForestClassifier/RandomForestRegressor or a</span>
+<span class="sd">        CustomRandomForestClassifier, or uses the single tree from a DecisionTreeClassifier/DecisionTreeRegressor</span>
+<span class="sd">        to generate a DOT source for visualization.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - model (DecisionTreeClassifier, DecisionTreeRegressor, RandomForestClassifier,</span>
+<span class="sd">                 RandomForestRegressor, CustomRandomForestClassifier): The fitted model.</span>
+<span class="sd">        - feature_names (list): List of feature names.</span>
+<span class="sd">        - class_names (list): List of class names for the target variable.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - str: The DOT source for visualizing the model&#39;s first tree.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">oob_error</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Handle RandomForestClassifier/RandomForestRegressor and CustomRandomForestClassifier</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">model</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">RandomForestClassifier</span><span class="p">,</span>
+                <span class="n">RandomForestRegressor</span><span class="p">,</span>
+                <span class="n">CustomRandomForestClassifier</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">):</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">estimators_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tree_</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;oob_score_&quot;</span><span class="p">):</span>
+                <span class="n">oob_error</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">oob_score_</span>
+        <span class="c1"># Handle DecisionTreeClassifier/DecisionTreeRegressor</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">DecisionTreeRegressor</span><span class="p">)):</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">tree_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Model must be a decision tree, random forest, or custom random forest model.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">impurity_reduction</span> <span class="o">=</span> <span class="n">Charts</span><span class="o">.</span><span class="n">calculate_impurity_reduction</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+        <span class="n">custom_metric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">node_count</span>
+        <span class="p">)</span>  <span class="c1"># Placeholder for a custom metric</span>
+
+        <span class="n">dot_source</span> <span class="o">=</span> <span class="n">Charts</span><span class="o">.</span><span class="n">get_dot_source</span><span class="p">(</span>
+            <span class="n">tree</span><span class="p">,</span>
+            <span class="n">feature_names</span><span class="p">,</span>
+            <span class="n">class_names</span><span class="p">,</span>
+            <span class="n">impurity_reduction</span><span class="p">,</span>
+            <span class="n">custom_metric</span><span class="p">,</span>
+            <span class="n">oob_error</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">dot_source</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">plot_tree</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot the tree using graphviz.</span>
+
+<span class="sd">        This method visualizes the decision tree or the first tree of a random forest using graphviz, highlighting nodes based on their impurity.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - model (DecisionTreeClassifier or RandomForestClassifier): The fitted model.</span>
+<span class="sd">        - feature_names (list): List of feature names.</span>
+<span class="sd">        - class_names (list): List of class names for the target variable.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - graphviz.Source: The graphviz object for the tree visualization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dot_source</span> <span class="o">=</span> <span class="n">Charts</span><span class="o">.</span><span class="n">auto_generate_dot_source</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">)</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Source</span><span class="p">(</span><span class="n">dot_source</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">graph</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">plot_forest_trees</span><span class="p">(</span><span class="n">forest_model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">,</span> <span class="n">max_trees</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        ### Parameters</span>
+
+<span class="sd">        - `forest_model` (`RandomForestClassifier`): The fitted RandomForestClassifier model from which the trees will be visualized.</span>
+<span class="sd">        - `feature_names` (`list`): A list of strings representing the names of the features used in the model.</span>
+<span class="sd">        - `class_names` (`list`): A list of strings representing the names of the target classes the model predicts.</span>
+<span class="sd">        - `max_trees` (`int`, optional): The maximum number of trees to visualize. Defaults to 5.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">estimator</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">forest_model</span><span class="o">.</span><span class="n">estimators_</span><span class="p">[:</span><span class="n">max_trees</span><span class="p">]):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Visualizing Tree </span><span class="si">{</span><span class="n">idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">forest_model</span><span class="o">.</span><span class="n">estimators_</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">Charts</span><span class="o">.</span><span class="n">plot_tree</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">)</span>
+            <span class="n">display</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="chart.Charts.auto_generate_dot_source" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">auto_generate_dot_source</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Automatically generate DOT source for a given tree-based model.</p>
+<p>This method selects the first tree from a RandomForestClassifier/RandomForestRegressor or a
+CustomRandomForestClassifier, or uses the single tree from a DecisionTreeClassifier/DecisionTreeRegressor
+to generate a DOT source for visualization.</p>
+      <ul>
+<li>model (DecisionTreeClassifier, DecisionTreeRegressor, RandomForestClassifier,
+         RandomForestRegressor, CustomRandomForestClassifier): The fitted model.</li>
+<li>feature_names (list): List of feature names.</li>
+<li>class_names (list): List of class names for the target variable.</li>
+</ul>
+<p>Returns:
+- str: The DOT source for visualizing the model's first tree.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>chart.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">auto_generate_dot_source</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Automatically generate DOT source for a given tree-based model.</span>
+
+<span class="sd">    This method selects the first tree from a RandomForestClassifier/RandomForestRegressor or a</span>
+<span class="sd">    CustomRandomForestClassifier, or uses the single tree from a DecisionTreeClassifier/DecisionTreeRegressor</span>
+<span class="sd">    to generate a DOT source for visualization.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - model (DecisionTreeClassifier, DecisionTreeRegressor, RandomForestClassifier,</span>
+<span class="sd">             RandomForestRegressor, CustomRandomForestClassifier): The fitted model.</span>
+<span class="sd">    - feature_names (list): List of feature names.</span>
+<span class="sd">    - class_names (list): List of class names for the target variable.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - str: The DOT source for visualizing the model&#39;s first tree.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">oob_error</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Handle RandomForestClassifier/RandomForestRegressor and CustomRandomForestClassifier</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="p">(</span>
+            <span class="n">RandomForestClassifier</span><span class="p">,</span>
+            <span class="n">RandomForestRegressor</span><span class="p">,</span>
+            <span class="n">CustomRandomForestClassifier</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">):</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">estimators_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tree_</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;oob_score_&quot;</span><span class="p">):</span>
+            <span class="n">oob_error</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">oob_score_</span>
+    <span class="c1"># Handle DecisionTreeClassifier/DecisionTreeRegressor</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">DecisionTreeRegressor</span><span class="p">)):</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">tree_</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Model must be a decision tree, random forest, or custom random forest model.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">impurity_reduction</span> <span class="o">=</span> <span class="n">Charts</span><span class="o">.</span><span class="n">calculate_impurity_reduction</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+    <span class="n">custom_metric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">node_count</span>
+    <span class="p">)</span>  <span class="c1"># Placeholder for a custom metric</span>
+
+    <span class="n">dot_source</span> <span class="o">=</span> <span class="n">Charts</span><span class="o">.</span><span class="n">get_dot_source</span><span class="p">(</span>
+        <span class="n">tree</span><span class="p">,</span>
+        <span class="n">feature_names</span><span class="p">,</span>
+        <span class="n">class_names</span><span class="p">,</span>
+        <span class="n">impurity_reduction</span><span class="p">,</span>
+        <span class="n">custom_metric</span><span class="p">,</span>
+        <span class="n">oob_error</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">dot_source</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="chart.Charts.calculate_impurity_reduction" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">calculate_impurity_reduction</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Calculate impurity reduction for each node in the decision tree.</p>
+<p>This method computes the decrease in impurity for each node of the tree as a measure of how much each split contributes to organizing the data into homogenous groups.</p>
+<p>Parameters:
+- tree (DecisionTreeClassifier.tree_): The tree object from a fitted DecisionTreeClassifier or a tree from a RandomForestClassifier.</p>
+<p>Returns:
+- numpy.ndarray: An array of impurity reduction values for each node in the tree.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>chart.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">calculate_impurity_reduction</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate impurity reduction for each node in the decision tree.</span>
+
+<span class="sd">    This method computes the decrease in impurity for each node of the tree as a measure of how much each split contributes to organizing the data into homogenous groups.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - tree (DecisionTreeClassifier.tree_): The tree object from a fitted DecisionTreeClassifier or a tree from a RandomForestClassifier.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - numpy.ndarray: An array of impurity reduction values for each node in the tree.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">node_count</span>
+    <span class="n">children_left</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">children_left</span>
+    <span class="n">children_right</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">children_right</span>
+    <span class="n">impurity</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">impurity</span>
+    <span class="n">weighted_n_node_samples</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">weighted_n_node_samples</span>
+
+    <span class="n">impurity_reduction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">children_left</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">!=</span> <span class="n">children_right</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>  <span class="c1"># if not a leaf node</span>
+            <span class="n">left_weight</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">weighted_n_node_samples</span><span class="p">[</span><span class="n">children_left</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+                <span class="o">/</span> <span class="n">weighted_n_node_samples</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">right_weight</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">weighted_n_node_samples</span><span class="p">[</span><span class="n">children_right</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+                <span class="o">/</span> <span class="n">weighted_n_node_samples</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">impurity_reduction</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">impurity</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span>
+                <span class="n">left_weight</span> <span class="o">*</span> <span class="n">impurity</span><span class="p">[</span><span class="n">children_left</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+                <span class="o">+</span> <span class="n">right_weight</span> <span class="o">*</span> <span class="n">impurity</span><span class="p">[</span><span class="n">children_right</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">impurity_reduction</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="chart.Charts.get_dot_source" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_dot_source</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">,</span> <span class="n">impurity_reduction</span><span class="p">,</span> <span class="n">custom_metric</span><span class="p">,</span> <span class="n">oob_error</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Generate DOT source for tree visualization with node coloring based on impurity.</p>
+<p>This method creates a DOT graph description for visualizing the structure of a decision tree, including details about nodes, their splits, and coloring based on impurity levels.</p>
+<p>Parameters:
+- tree (DecisionTreeClassifier.tree_): The tree object from a fitted model.
+- feature_names (list): List of feature names.
+- class_names (list): List of class names for the target variable.
+- impurity_reduction (numpy.ndarray): Impurity reduction values for each node.
+- custom_metric (numpy.ndarray): An array of custom metric values for each node.
+- oob_error (float, optional): Out-Of-Bag error of the model, if applicable.</p>
+<p>Returns:
+- str: A string representation of the DOT source for the tree visualization.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>chart.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">get_dot_source</span><span class="p">(</span>
+    <span class="n">tree</span><span class="p">,</span>
+    <span class="n">feature_names</span><span class="p">,</span>
+    <span class="n">class_names</span><span class="p">,</span>
+    <span class="n">impurity_reduction</span><span class="p">,</span>
+    <span class="n">custom_metric</span><span class="p">,</span>
+    <span class="n">oob_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate DOT source for tree visualization with node coloring based on impurity.</span>
+
+<span class="sd">    This method creates a DOT graph description for visualizing the structure of a decision tree, including details about nodes, their splits, and coloring based on impurity levels.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - tree (DecisionTreeClassifier.tree_): The tree object from a fitted model.</span>
+<span class="sd">    - feature_names (list): List of feature names.</span>
+<span class="sd">    - class_names (list): List of class names for the target variable.</span>
+<span class="sd">    - impurity_reduction (numpy.ndarray): Impurity reduction values for each node.</span>
+<span class="sd">    - custom_metric (numpy.ndarray): An array of custom metric values for each node.</span>
+<span class="sd">    - oob_error (float, optional): Out-Of-Bag error of the model, if applicable.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - str: A string representation of the DOT source for the tree visualization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">node_count</span>
+    <span class="n">children_left</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">children_left</span>
+    <span class="n">children_right</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">children_right</span>
+    <span class="n">feature</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">feature</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">threshold</span>
+    <span class="n">impurity</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">impurity</span>
+    <span class="n">n_node_samples</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">n_node_samples</span>
+    <span class="n">weighted_n_node_samples</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">weighted_n_node_samples</span>
+
+    <span class="c1"># Adjust color settings to match scikit-learn style</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span>  <span class="c1"># Use Blues color map for impurity-based coloring</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">(</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">impurity</span><span class="p">)</span> <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">impurity</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="p">)</span>  <span class="c1"># Normalize impurity values</span>
+    <span class="n">scalar_mapping</span> <span class="o">=</span> <span class="n">ScalarMappable</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+
+    <span class="n">dot_source</span> <span class="o">=</span> <span class="s2">&quot;digraph Tree {</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">dot_source</span> <span class="o">+=</span> <span class="s1">&#39;node [shape=box, style=&quot;filled&quot;, fontname=&quot;helvetica&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">dot_source</span> <span class="o">+=</span> <span class="s1">&#39;edge [fontname=&quot;helvetica&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="k">if</span> <span class="n">oob_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;label=&quot;OOB Error: </span><span class="si">{</span><span class="n">oob_error</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="se">\\</span><span class="s1">n&quot;;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">dot_source</span> <span class="o">+=</span> <span class="s1">&#39;labelloc=&quot;t&quot;;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">):</span>
+        <span class="n">fillcolor</span> <span class="o">=</span> <span class="n">scalar_mapping</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">impurity</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">bytes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">hexcolor</span> <span class="o">=</span> <span class="n">to_hex</span><span class="p">(</span><span class="n">fillcolor</span><span class="p">)</span>
+
+        <span class="n">node_info</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+        <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Samples: </span><span class="si">{</span><span class="n">n_node_samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+        <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Value: </span><span class="si">{</span><span class="n">tree</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+        <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Impurity: </span><span class="si">{</span><span class="n">impurity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+        <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Impurity Reduction: </span><span class="si">{</span><span class="n">impurity_reduction</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+        <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Custom Metric: </span><span class="si">{</span><span class="n">custom_metric</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="n">children_left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">children_right</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> [label=&quot;</span><span class="si">{</span><span class="n">node_info</span><span class="si">}</span><span class="s1">&quot;, fillcolor=&quot;</span><span class="si">{</span><span class="n">hexcolor</span><span class="si">}</span><span class="s1">&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">feature_name</span> <span class="o">=</span> <span class="n">feature_names</span><span class="p">[</span><span class="n">feature</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">nFeature: </span><span class="si">{</span><span class="n">feature_name</span><span class="si">}</span><span class="se">\\</span><span class="s2">n&quot;</span>
+            <span class="n">node_info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Threshold: </span><span class="si">{</span><span class="n">threshold</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> [label=&quot;</span><span class="si">{</span><span class="n">node_info</span><span class="si">}</span><span class="s1">&quot;, fillcolor=&quot;</span><span class="si">{</span><span class="n">hexcolor</span><span class="si">}</span><span class="s1">&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">if</span> <span class="n">children_left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> -&gt; </span><span class="si">{</span><span class="n">children_left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> [label=&quot;yes&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="n">children_right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">dot_source</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> -&gt; </span><span class="si">{</span><span class="n">children_right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> [label=&quot;no&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="n">dot_source</span> <span class="o">+=</span> <span class="s2">&quot;}&quot;</span>
+    <span class="k">return</span> <span class="n">dot_source</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="chart.Charts.get_oob_error" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_oob_error</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get Out-Of-Bag (OOB) error for Random Forest models.</p>
+<p>This method retrieves the OOB error from a fitted RandomForestClassifier, which is a measure of prediction error for the training data.</p>
+<p>Parameters:
+- model (RandomForestClassifier): The fitted RandomForestClassifier model.</p>
+<p>Returns:
+- float or None: The OOB error if available, otherwise None.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>chart.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">get_oob_error</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get Out-Of-Bag (OOB) error for Random Forest models.</span>
+
+<span class="sd">    This method retrieves the OOB error from a fitted RandomForestClassifier, which is a measure of prediction error for the training data.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - model (RandomForestClassifier): The fitted RandomForestClassifier model.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - float or None: The OOB error if available, otherwise None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;oob_score_&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">oob_score_</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="chart.Charts.plot_forest_trees" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">plot_forest_trees</span><span class="p">(</span><span class="n">forest_model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">,</span> <span class="n">max_trees</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <h6 id="chart.Charts.plot_forest_trees--parameters">Parameters</h6>
+<ul>
+<li><code>forest_model</code> (<code>RandomForestClassifier</code>): The fitted RandomForestClassifier model from which the trees will be visualized.</li>
+<li><code>feature_names</code> (<code>list</code>): A list of strings representing the names of the features used in the model.</li>
+<li><code>class_names</code> (<code>list</code>): A list of strings representing the names of the target classes the model predicts.</li>
+<li><code>max_trees</code> (<code>int</code>, optional): The maximum number of trees to visualize. Defaults to 5.</li>
+</ul>
+
+          <details class="quote">
+            <summary>Source code in <code>chart.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">plot_forest_trees</span><span class="p">(</span><span class="n">forest_model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">,</span> <span class="n">max_trees</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    ### Parameters</span>
+
+<span class="sd">    - `forest_model` (`RandomForestClassifier`): The fitted RandomForestClassifier model from which the trees will be visualized.</span>
+<span class="sd">    - `feature_names` (`list`): A list of strings representing the names of the features used in the model.</span>
+<span class="sd">    - `class_names` (`list`): A list of strings representing the names of the target classes the model predicts.</span>
+<span class="sd">    - `max_trees` (`int`, optional): The maximum number of trees to visualize. Defaults to 5.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">estimator</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">forest_model</span><span class="o">.</span><span class="n">estimators_</span><span class="p">[:</span><span class="n">max_trees</span><span class="p">]):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Visualizing Tree </span><span class="si">{</span><span class="n">idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">forest_model</span><span class="o">.</span><span class="n">estimators_</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">Charts</span><span class="o">.</span><span class="n">plot_tree</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="chart.Charts.plot_tree" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">plot_tree</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Plot the tree using graphviz.</p>
+<p>This method visualizes the decision tree or the first tree of a random forest using graphviz, highlighting nodes based on their impurity.</p>
+<p>Parameters:
+- model (DecisionTreeClassifier or RandomForestClassifier): The fitted model.
+- feature_names (list): List of feature names.
+- class_names (list): List of class names for the target variable.</p>
+<p>Returns:
+- graphviz.Source: The graphviz object for the tree visualization.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>chart.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">plot_tree</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the tree using graphviz.</span>
+
+<span class="sd">    This method visualizes the decision tree or the first tree of a random forest using graphviz, highlighting nodes based on their impurity.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - model (DecisionTreeClassifier or RandomForestClassifier): The fitted model.</span>
+<span class="sd">    - feature_names (list): List of feature names.</span>
+<span class="sd">    - class_names (list): List of class names for the target variable.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - graphviz.Source: The graphviz object for the tree visualization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dot_source</span> <span class="o">=</span> <span class="n">Charts</span><span class="o">.</span><span class="n">auto_generate_dot_source</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">class_names</span><span class="p">)</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Source</span><span class="p">(</span><span class="n">dot_source</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">graph</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../benchmark_evalaute/" class="btn btn-neutral float-left" title="Benchmark Evaluate"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../classifier/" class="btn btn-neutral float-right" title="Custom RF Classifier">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../benchmark_evalaute/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../classifier/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

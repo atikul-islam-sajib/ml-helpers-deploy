@@ -124,9 +124,154 @@ out-of-bag (OOB) error.</p>
 <p>This class extends sklearn's RandomForestRegressor, adding the functionality to compute and use
 weights for each tree in the ensemble. Weights are derived from the exponential of the negative
 OOB error, enabling more influential contributions from better-performing trees when making predictions.</p>
+<p>Inherits from <code>sklearn.ensemble.RandomForestClassifier</code>:</p>
+<pre><code class="language-python">class sklearn.ensemble.RandomForestRegressor(
+    n_estimators=100, *, criterion='squared_error', max_depth=None,
+    min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0,
+    max_features=1.0, max_leaf_nodes=None, min_impurity_decrease=0.0, bootstrap=True,
+    oob_score=False, n_jobs=None, random_state=None, verbose=0, warm_start=False, ccp_alpha=0.0,
+    max_samples=None, monotonic_cst=None)
+</code></pre>
 <h4 id="regressor.CustomRandomForestRegressor--parameters">Parameters:</h4>
 <p>All parameters of the sklearn.ensemble.RandomForestRegressor class are accepted.</p>
-<h4 id="regressor.CustomRandomForestRegressor--attributes">Attributes:</h4>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>n_estimators</code></b>
+              –
+              <div class="doc-md-description">
+                <p>int, default=100
+The number of trees in the forest.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>criterion</code></b>
+              –
+              <div class="doc-md-description">
+                <p>{“squared_error”, “absolute_error”, “friedman_mse”, “poisson”}, default="“squared_error”"
+The function to measure the quality of a split.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>max_depth</code></b>
+              –
+              <div class="doc-md-description">
+                <p>int, default=None
+The maximum depth of the tree.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_samples_split</code></b>
+              –
+              <div class="doc-md-description">
+                <p>int or float, default=2
+The minimum number of samples required to split an internal node.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_samples_leaf</code></b>
+              –
+              <div class="doc-md-description">
+                <p>int or float, default=1
+The minimum number of samples required to be at a leaf node.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_weight_fraction_leaf</code></b>
+              –
+              <div class="doc-md-description">
+                <p>float, default=0.0
+The minimum weighted fraction of the sum total of weights required to be at a leaf node.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>max_features</code></b>
+              –
+              <div class="doc-md-description">
+                <p>{"sqrt", "log2", None}, int or float, default="sqrt"
+The number of features to consider when looking for the best split.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>bootstrap</code></b>
+              –
+              <div class="doc-md-description">
+                <p>bool, default=True
+Whether bootstrap samples are used when building trees.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>oob_score</code></b>
+              –
+              <div class="doc-md-description">
+                <p>bool, default=False
+Whether to use out-of-bag samples to estimate the generalization accuracy.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_jobs</code></b>
+              –
+              <div class="doc-md-description">
+                <p>int, default=None
+The number of jobs to run in parallel for both <code>fit</code> and <code>predict</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>random_state</code></b>
+              –
+              <div class="doc-md-description">
+                <p>int, RandomState instance or None, default=None
+Controls both the randomness of the bootstrapping of the samples used when building trees (if <code>bootstrap=True</code>) and the sampling of the features to consider when looking for the best split at each node (if <code>max_features &lt; n_features</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>verbose</code></b>
+              –
+              <div class="doc-md-description">
+                <p>int, default=0
+Controls the verbosity when fitting and predicting.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>warm_start</code></b>
+              –
+              <div class="doc-md-description">
+                <p>bool, default=False
+When set to <code>True</code>, reuse the solution of the previous call to fit and add more estimators to the ensemble, otherwise, just fit a whole new forest.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ccp_alpha</code></b>
+              –
+              <div class="doc-md-description">
+                <p>non-negative float, default=0.0
+Complexity parameter used for Minimal Cost-Complexity Pruning.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>max_samples</code></b>
+              –
+              <div class="doc-md-description">
+                <p>int or float, default=None
+The number of samples to draw from X to train each base estimator.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>      <h4 id="regressor.CustomRandomForestRegressor--attributes">Attributes:</h4>
 <ul>
 <li><code>in_bag_indices_</code> : list of arrays
     Indices of samples drawn for training each tree.</li>
@@ -275,7 +420,43 @@ y_pred = reg.predict(X[:5])
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
-<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CustomRandomForestRegressor</span><span class="p">(</span><span class="n">RandomForestRegressor</span><span class="p">):</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CustomRandomForestRegressor</span><span class="p">(</span><span class="n">RandomForestRegressor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A custom implementation of RandomForestRegressor that supports weighting trees based on their</span>
 <span class="sd">    out-of-bag (OOB) error.</span>
@@ -284,9 +465,52 @@ y_pred = reg.predict(X[:5])
 <span class="sd">    weights for each tree in the ensemble. Weights are derived from the exponential of the negative</span>
 <span class="sd">    OOB error, enabling more influential contributions from better-performing trees when making predictions.</span>
 
+<span class="sd">    Inherits from `sklearn.ensemble.RandomForestClassifier`:</span>
+<span class="sd">    ```python</span>
+<span class="sd">    class sklearn.ensemble.RandomForestRegressor(</span>
+<span class="sd">        n_estimators=100, *, criterion=&#39;squared_error&#39;, max_depth=None,</span>
+<span class="sd">        min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0,</span>
+<span class="sd">        max_features=1.0, max_leaf_nodes=None, min_impurity_decrease=0.0, bootstrap=True,</span>
+<span class="sd">        oob_score=False, n_jobs=None, random_state=None, verbose=0, warm_start=False, ccp_alpha=0.0,</span>
+<span class="sd">        max_samples=None, monotonic_cst=None)</span>
+<span class="sd">    ```</span>
+
+
 <span class="sd">    Parameters:</span>
 <span class="sd">    -----------</span>
 <span class="sd">    All parameters of the sklearn.ensemble.RandomForestRegressor class are accepted.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        n_estimators : int, default=100</span>
+<span class="sd">            The number of trees in the forest.</span>
+<span class="sd">        criterion : {“squared_error”, “absolute_error”, “friedman_mse”, “poisson”}, default=&quot;“squared_error”&quot;</span>
+<span class="sd">            The function to measure the quality of a split.</span>
+<span class="sd">        max_depth : int, default=None</span>
+<span class="sd">            The maximum depth of the tree.</span>
+<span class="sd">        min_samples_split : int or float, default=2</span>
+<span class="sd">            The minimum number of samples required to split an internal node.</span>
+<span class="sd">        min_samples_leaf : int or float, default=1</span>
+<span class="sd">            The minimum number of samples required to be at a leaf node.</span>
+<span class="sd">        min_weight_fraction_leaf : float, default=0.0</span>
+<span class="sd">            The minimum weighted fraction of the sum total of weights required to be at a leaf node.</span>
+<span class="sd">        max_features : {&quot;sqrt&quot;, &quot;log2&quot;, None}, int or float, default=&quot;sqrt&quot;</span>
+<span class="sd">            The number of features to consider when looking for the best split.</span>
+<span class="sd">        bootstrap : bool, default=True</span>
+<span class="sd">            Whether bootstrap samples are used when building trees.</span>
+<span class="sd">        oob_score : bool, default=False</span>
+<span class="sd">            Whether to use out-of-bag samples to estimate the generalization accuracy.</span>
+<span class="sd">        n_jobs : int, default=None</span>
+<span class="sd">            The number of jobs to run in parallel for both `fit` and `predict`.</span>
+<span class="sd">        random_state : int, RandomState instance or None, default=None</span>
+<span class="sd">            Controls both the randomness of the bootstrapping of the samples used when building trees (if `bootstrap=True`) and the sampling of the features to consider when looking for the best split at each node (if `max_features &lt; n_features`).</span>
+<span class="sd">        verbose : int, default=0</span>
+<span class="sd">            Controls the verbosity when fitting and predicting.</span>
+<span class="sd">        warm_start : bool, default=False</span>
+<span class="sd">            When set to `True`, reuse the solution of the previous call to fit and add more estimators to the ensemble, otherwise, just fit a whole new forest.</span>
+<span class="sd">        ccp_alpha : non-negative float, default=0.0</span>
+<span class="sd">            Complexity parameter used for Minimal Cost-Complexity Pruning.</span>
+<span class="sd">        max_samples : int or float, default=None</span>
+<span class="sd">            The number of samples to draw from X to train each base estimator.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">    -----------</span>
@@ -296,6 +520,7 @@ y_pred = reg.predict(X[:5])
 <span class="sd">        Out-of-bag sample indices for each tree.</span>
 <span class="sd">    - `tree_weights_` : list of floats</span>
 <span class="sd">        Weights for each tree, computed based on their OOB error.</span>
+
 
 <span class="sd">    Methods:</span>
 <span class="sd">    --------</span>
@@ -319,16 +544,14 @@ y_pred = reg.predict(X[:5])
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Build a forest of trees from the training set (X, y).</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        X : array-like or sparse matrix of shape = [n_samples, n_features]</span>
-<span class="sd">            The training input samples.</span>
-<span class="sd">        y : array-like of shape = [n_samples] or [n_samples, n_outputs]</span>
-<span class="sd">            The target values (real numbers).</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            X : array-like or sparse matrix of shape = [n_samples, n_features]</span>
+<span class="sd">                The training input samples.</span>
+<span class="sd">            y : array-like of shape = [n_samples] or [n_samples, n_outputs]</span>
+<span class="sd">                The target values (real numbers).</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        self : object</span>
+<span class="sd">        Returns: </span>
+<span class="sd">            self : object</span>
 <span class="sd">            Returns self.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -364,24 +587,18 @@ y_pred = reg.predict(X[:5])
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predict regression target for X using the trained forest.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        X : array-like or sparse matrix of shape = [n_samples, n_features]</span>
-<span class="sd">            The input samples.</span>
-<span class="sd">        weights : {&#39;uniform&#39;, &#39;expOOB&#39;}, default=&#39;uniform&#39;</span>
-<span class="sd">            The weighting scheme to use for aggregating predictions from the individual trees.</span>
-<span class="sd">            - &#39;uniform&#39;: All trees contribute equally to the final prediction.</span>
-<span class="sd">            - &#39;expOOB&#39;: Trees are weighted based on the exponential of the negative out-of-bag error.</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            weights : {&#39;uniform&#39;, &#39;expOOB&#39;}, default=&#39;uniform&#39;</span>
+<span class="sd">                The weighting scheme to use for aggregating predictions from the individual trees.</span>
+<span class="sd">                - &#39;uniform&#39;: All trees contribute equally to the final prediction.</span>
+<span class="sd">                - &#39;expOOB&#39;: Trees are weighted based on the exponential of the negative out-of-bag error.</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        y : ndarray of shape = [n_samples]</span>
-<span class="sd">            The predicted values.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            y : ndarray of shape = [n_samples]. The predicted values.</span>
 
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        If &#39;expOOB&#39; weighting is used, trees with lower out-of-bag error have a greater influence on</span>
-<span class="sd">        the final prediction, potentially improving predictive performance on unseen data.</span>
+<span class="sd">        Notes:</span>
+<span class="sd">            If &#39;expOOB&#39; weighting is used, trees with lower out-of-bag error have a greater influence on</span>
+<span class="sd">            the final prediction, potentially improving predictive performance on unseen data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;estimators_&quot;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The forest is not fitted yet!&quot;</span><span class="p">)</span>
@@ -428,74 +645,124 @@ y_pred = reg.predict(X[:5])
   <div class="doc doc-contents ">
   
       <p>Build a forest of trees from the training set (X, y).</p>
-<h5 id="regressor.CustomRandomForestRegressor.fit--parameters">Parameters</h5>
-<p>X : array-like or sparse matrix of shape = [n_samples, n_features]
-    The training input samples.
-y : array-like of shape = [n_samples] or [n_samples, n_outputs]
-    The target values (real numbers).</p>
-<h5 id="regressor.CustomRandomForestRegressor.fit--returns">Returns</h5>
-<p>self : object
-    Returns self.</p>
 
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>X</code></b>
+              –
+              <div class="doc-md-description">
+                <p>array-like or sparse matrix of shape = [n_samples, n_features]
+The training input samples.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>y</code></b>
+              –
+              <div class="doc-md-description">
+                <p>array-like of shape = [n_samples] or [n_samples, n_outputs]
+The target values (real numbers).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+<b><code>self</code></b>            –
+            <div class="doc-md-description">
+              <p>object</p>
+            </div>
+          </li>
+          <li>
+            –
+            <div class="doc-md-description">
+              <p>Returns self.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
           <details class="quote">
             <summary>Source code in <code>regressor.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span>
-<span class="normal">94</span>
-<span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Build a forest of trees from the training set (X, y).</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    X : array-like or sparse matrix of shape = [n_samples, n_features]</span>
-<span class="sd">        The training input samples.</span>
-<span class="sd">    y : array-like of shape = [n_samples] or [n_samples, n_outputs]</span>
-<span class="sd">        The target values (real numbers).</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">        X : array-like or sparse matrix of shape = [n_samples, n_features]</span>
+<span class="sd">            The training input samples.</span>
+<span class="sd">        y : array-like of shape = [n_samples] or [n_samples, n_outputs]</span>
+<span class="sd">            The target values (real numbers).</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    self : object</span>
+<span class="sd">    Returns: </span>
+<span class="sd">        self : object</span>
 <span class="sd">        Returns self.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -546,82 +813,112 @@ y : array-like of shape = [n_samples] or [n_samples, n_outputs]
   <div class="doc doc-contents ">
   
       <p>Predict regression target for X using the trained forest.</p>
-<h5 id="regressor.CustomRandomForestRegressor.predict--parameters">Parameters</h5>
-<p>X : array-like or sparse matrix of shape = [n_samples, n_features]
-    The input samples.
-weights : {'uniform', 'expOOB'}, default='uniform'
-    The weighting scheme to use for aggregating predictions from the individual trees.
-    - 'uniform': All trees contribute equally to the final prediction.
-    - 'expOOB': Trees are weighted based on the exponential of the negative out-of-bag error.</p>
-<h5 id="regressor.CustomRandomForestRegressor.predict--returns">Returns</h5>
-<p>y : ndarray of shape = [n_samples]
-    The predicted values.</p>
-<h5 id="regressor.CustomRandomForestRegressor.predict--notes">Notes</h5>
-<p>If 'expOOB' weighting is used, trees with lower out-of-bag error have a greater influence on
-the final prediction, potentially improving predictive performance on unseen data.</p>
 
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>weights</code></b>
+              –
+              <div class="doc-md-description">
+                <p>{'uniform', 'expOOB'}, default='uniform'
+The weighting scheme to use for aggregating predictions from the individual trees.
+- 'uniform': All trees contribute equally to the final prediction.
+- 'expOOB': Trees are weighted based on the exponential of the negative out-of-bag error.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+<b><code>y</code></b>            –
+            <div class="doc-md-description">
+              <p>ndarray of shape = [n_samples]. The predicted values.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+<details class="notes" open>
+  <summary>Notes</summary>
+  <p>If 'expOOB' weighting is used, trees with lower out-of-bag error have a greater influence on
+the final prediction, potentially improving predictive performance on unseen data.</p>
+</details>
           <details class="quote">
             <summary>Source code in <code>regressor.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Predict regression target for X using the trained forest.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    X : array-like or sparse matrix of shape = [n_samples, n_features]</span>
-<span class="sd">        The input samples.</span>
-<span class="sd">    weights : {&#39;uniform&#39;, &#39;expOOB&#39;}, default=&#39;uniform&#39;</span>
-<span class="sd">        The weighting scheme to use for aggregating predictions from the individual trees.</span>
-<span class="sd">        - &#39;uniform&#39;: All trees contribute equally to the final prediction.</span>
-<span class="sd">        - &#39;expOOB&#39;: Trees are weighted based on the exponential of the negative out-of-bag error.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">        weights : {&#39;uniform&#39;, &#39;expOOB&#39;}, default=&#39;uniform&#39;</span>
+<span class="sd">            The weighting scheme to use for aggregating predictions from the individual trees.</span>
+<span class="sd">            - &#39;uniform&#39;: All trees contribute equally to the final prediction.</span>
+<span class="sd">            - &#39;expOOB&#39;: Trees are weighted based on the exponential of the negative out-of-bag error.</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    y : ndarray of shape = [n_samples]</span>
-<span class="sd">        The predicted values.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        y : ndarray of shape = [n_samples]. The predicted values.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    If &#39;expOOB&#39; weighting is used, trees with lower out-of-bag error have a greater influence on</span>
-<span class="sd">    the final prediction, potentially improving predictive performance on unseen data.</span>
+<span class="sd">    Notes:</span>
+<span class="sd">        If &#39;expOOB&#39; weighting is used, trees with lower out-of-bag error have a greater influence on</span>
+<span class="sd">        the final prediction, potentially improving predictive performance on unseen data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;estimators_&quot;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The forest is not fitted yet!&quot;</span><span class="p">)</span>
